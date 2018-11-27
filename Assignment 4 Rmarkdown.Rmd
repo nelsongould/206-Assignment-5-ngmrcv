@@ -9,3 +9,37 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+# Install packages and read in csv files
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(plotly)
+library(extrafont)
+library(effsize)
+library(vcdExtra)
+library(car)
+library(ggsignif)
+library(stargazer)
+
+grad_enroll <- read_csv("grad_enroll_simplified.csv")
+doc_salary <- read_csv("median_doctoral_salary.csv")
+faculty_salary <- read_csv("faculty_salary_data.csv")
+
+#phd_field <- read_csv(#############)
+
+```
+
+
+```{r}
+
+# 1. Male and female graduate enrollment (1967 - 2015).
+
+
+
+```
+
+
+
+
