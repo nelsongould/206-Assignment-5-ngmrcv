@@ -36,10 +36,64 @@ faculty_salary <- read_csv("faculty_salary_data.csv")
 
 # 1. Male and female graduate enrollment (1967 - 2015).
 
+male_female_grad_graph <- ggplot(grad_enroll, aes(x = Year)) +
+  geom_point(aes(y = total_males/1000), color = "skyblue") +
+  geom_point(aes(y = total_females/1000), color = "tomato") +
+  theme_classic() +
+  labs(y = "Graduate Enrollment Count (1000 students)") 
+  #scale_x_continuous(expand = c(0,0)) +
+  #scale_y_continuous(expand = c(0,0))
+  
+male_female_grad_graph
+
+```
+
+
+```{r}
+
+# 2. Shifts in female PhD recipients by field (1985, 2000, and 2015).
+
+
 
 
 ```
 
 
 
+```{r}
+
+# 3. Male and female salaries for starting postdoctoral and other employment positions (2015).
+
+mf_sal_postdoc_sum <- doc_salary %>% 
+  group_by(sex) %>% 
+  filter(postgrad_plan == "Postdoctoral study") %>% 
+  summarize(
+    mean_salary = mean(salary),
+    sd_salary = sd(salary),
+    sample_size = length(salary)
+  )
+mf_sal_postdoc_sum
+
+mf_sal_empl_sum <- doc_salary %>% 
+  group_by(sex) %>% 
+  filter(postgrad_plan == "Employment") %>% 
+  summarize(
+    mean_salary = mean(salary),
+    sd_salary = sd(salary),
+    sample_size = length(salary)
+  )
+mf_sal_empl_sum
+
+# Exploratory Histogram and QQ-plot
+
+
+
+
+# Summary Graph
+
+male_female_sal_graph <- ggplot(mf_sal_sum, aes(x=sex, y = mean_salary)) +
+  geom_col()
+
+male_female_sal_graph
+```
 
