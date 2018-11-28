@@ -86,8 +86,9 @@ mf_sal_empl_sum
 
 # Exploratory Histogram and QQ-plot
 
-
-
+mf_sal_hist <-  ggplot(doc_salary, aes(doc_salary$salary)) +
+  geom_histogram(aes(fill = sex, bins = 10), position = "dodge")
+mf_sal_hist
 
 # Summary Graph
 
