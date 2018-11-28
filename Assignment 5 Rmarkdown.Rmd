@@ -97,3 +97,9 @@ male_female_sal_graph <- ggplot(mf_sal_sum, aes(x=sex, y = mean_salary)) +
 male_female_sal_graph
 ```
 
+```{r}
+
+# 4. Multiple linear regression 
+
+```
+
