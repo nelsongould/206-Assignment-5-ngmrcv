@@ -52,6 +52,10 @@ male_female_grad_graph
 
 # 2. Shifts in female PhD recipients by field (1985, 2000, and 2015).
 
+phd_field %>%
+  filter(field_of_study != "NA" | field_of_study != "Female") %>%
+  select(field_of_study, number_1985, number_2000, number_2015)
+
 
 
 
