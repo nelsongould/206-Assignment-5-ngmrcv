@@ -103,7 +103,29 @@ male_female_sal_graph
 
 ```{r}
 
-# 4. Multiple linear regression 
+# 4. Multiple linear regression
+
+# a. Visualize salary by sex
+
+by_sex <- ggplot(faculty_salary, aes(x = Salary)) +
+  geom_density(aes(color = Sex, fill = Sex), alpha = 0.3) +
+  theme_classic() +
+  scale_x_continuous(expand = c(0,0), limits = c(0,250000)) +
+  scale_y_continuous(expand = c(0,0)) +
+  labs(x = "Salary", y = "Density")
+
+by_sex
+
+```
+
+```{r}
+# Relationship b/w rank and salary
+
+by_rank <- ggplot(faculty_salary, aes(x = faculty_rank, y = Salary)) +
+  geom_point(aes(color = Sex, pch = Sex), alpha = 0.5) +
+  facet_wrap(~Sex)
+
+by_rank
 
 ```
 
