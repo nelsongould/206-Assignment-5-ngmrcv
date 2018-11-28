@@ -1,0 +1,99 @@
+---
+title: "Assignment 4 Rmarkdown"
+author: "Nelson Gould"
+date: "11/26/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Install packages and read in csv files
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(plotly)
+library(extrafont)
+library(effsize)
+library(vcdExtra)
+library(car)
+library(ggsignif)
+library(stargazer)
+
+grad_enroll <- read_csv("grad_enroll_simplified.csv")
+doc_salary <- read_csv("median_doctoral_salary.csv")
+faculty_salary <- read_csv("faculty_salary_data.csv")
+phd_field <- read_csv("phd_by_field_simplified.csv")
+
+```
+
+
+```{r}
+
+# 1. Male and female graduate enrollment (1967 - 2015).
+
+male_female_grad_graph <- ggplot(grad_enroll, aes(x = Year)) +
+  geom_point(aes(y = total_males/1000), color = "skyblue") +
+  geom_point(aes(y = total_females/1000), color = "tomato") +
+  theme_classic() +
+  labs(y = "Graduate Enrollment Count (1000 students)") 
+  #scale_x_continuous(expand = c(0,0)) +
+  #scale_y_continuous(expand = c(0,0))
+  
+male_female_grad_graph
+
+```
+
+
+```{r}
+
+# 2. Shifts in female PhD recipients by field (1985, 2000, and 2015).
+
+
+
+
+```
+
+
+
+```{r}
+
+# 3. Male and female salaries for starting postdoctoral and other employment positions (2015).
+
+mf_sal_postdoc_sum <- doc_salary %>% 
+  group_by(sex) %>% 
+  filter(postgrad_plan == "Postdoctoral study") %>% 
+  summarize(
+    mean_salary = mean(salary),
+    sd_salary = sd(salary),
+    sample_size = length(salary)
+  )
+mf_sal_postdoc_sum
+
+mf_sal_empl_sum <- doc_salary %>% 
+  group_by(sex) %>% 
+  filter(postgrad_plan == "Employment") %>% 
+  summarize(
+    mean_salary = mean(salary),
+    sd_salary = sd(salary),
+    sample_size = length(salary)
+  )
+mf_sal_empl_sum
+
+# Exploratory Histogram and QQ-plot
+
+mf_sal_hist <-  ggplot(doc_salary, aes(doc_salary$salary)) +
+  geom_histogram(aes(fill = sex, bins = 10), position = "dodge")
+mf_sal_hist
+
+# Summary Graph
+
+male_female_sal_graph <- ggplot(mf_sal_sum, aes(x=sex, y = mean_salary)) +
+  geom_col()
+
+male_female_sal_graph
+```
+
