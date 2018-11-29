@@ -1,6 +1,6 @@
 ---
 title: "Assignment 4 Rmarkdown"
-author: "Nelson Gould"
+author: "Nelson Gould, Max Russer, Caio Vianna"
 date: "11/26/2018"
 output: html_document
 ---
@@ -96,7 +96,8 @@ mf_sal_postdoc_sum <- doc_salary %>%
   summarize(
     mean_salary = mean(salary),
     sd_salary = sd(salary),
-    sample_size = length(salary)
+    sample_size = length(salary),
+    datatype = "Postdoctoral Employment"
   )
 mf_sal_postdoc_sum
 
@@ -106,22 +107,75 @@ mf_sal_empl_sum <- doc_salary %>%
   summarize(
     mean_salary = mean(salary),
     sd_salary = sd(salary),
-    sample_size = length(salary)
+    sample_size = length(salary),
+    datatype = "Non-Postdoctoral Employment"
   )
 mf_sal_empl_sum
+
+# Joining summary tables
+
+mf_sal_sum <- full_join(mf_sal_empl_sum, mf_sal_postdoc_sum) 
+mf_sal_sum
 
 # Exploratory Histogram and QQ-plot
 
 mf_sal_hist <-  ggplot(doc_salary, aes(doc_salary$salary)) +
   geom_histogram(aes(fill = sex, bins = 10), position = "dodge")
 mf_sal_hist
+mf_sal_qq <- ggplot(doc_salary, aes(sample = salary))+
+  geom_qq(aes(fill = sex))
+mf_sal_qq
 
-# Summary Graph
+# Data appear to be non-normal, n = 15, will use Mann-Whitney U test 
 
-male_female_sal_graph <- ggplot(mf_sal_sum, aes(x=sex, y = mean_salary)) +
-  geom_col()
+
+### Summary Column Graph
+
+male_female_sal_graph <- ggplot(mf_sal_sum, aes(x= sex, y = mean_salary/1000)) +
+  geom_col(aes(fill = sex), position = "dodge", fill = c("tomato","skyblue","tomato","skyblue"), color = "black") +
+  facet_wrap(~datatype) +
+  theme_classic() +
+  labs(x = "Sex", y = "Mean Median Salary ($1000)") +
+  scale_x_discrete(expand = c(0,0)) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,120)) +
+  theme(legend.position = "none") +
+  geom_errorbar(aes(ymin=(mean_salary-sd_salary)/1000, ymax=(mean_salary+sd_salary)/1000, width=.15)) 
 
 male_female_sal_graph
+
+### Mann-Whitney U test and Cliff's Delta for both Non-Postdoc and Postdoc ####
+
+# Postdoc
+
+male_sal_postdoc <- doc_salary %>% 
+  filter(postgrad_plan == "Postdoctoral study") %>% 
+  filter(sex == "Male")
+female_sal_postdoc <- doc_salary %>% 
+  filter(postgrad_plan == "Postdoctoral study") %>% 
+  filter(sex == "Female")
+mf_sal_postdoc_mannwhitu <- wilcox.test(male_sal_postdoc$salary,female_sal_postdoc$salary)
+
+mf_sal_postdoc_cliffd <- cliff.delta(male_sal_postdoc$salary,female_sal_postdoc$salary)
+
+mf_sal_postdoc_mannwhitu
+mf_sal_postdoc_cliffd # Negligable!
+
+# Non-Postdoc
+
+male_sal_empl <- doc_salary %>% 
+  filter(postgrad_plan == "Employment") %>% 
+  filter(sex == "Male")
+female_sal_empl <- doc_salary %>% 
+  filter(postgrad_plan == "Employment") %>% 
+  filter(sex == "Female")
+mf_sal_empl_mannwhitu <- wilcox.test(male_sal_empl$salary,female_sal_empl$salary)
+
+mf_sal_empl_cliffd <- cliff.delta(male_sal_empl$salary,female_sal_empl$salary)
+
+mf_sal_empl_mannwhitu
+mf_sal_empl_cliffd # Small Effect Size
+
+
 ```
 
 ```{r}
