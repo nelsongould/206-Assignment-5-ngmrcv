@@ -1,6 +1,6 @@
 ---
 title: "Assignment 4 Rmarkdown"
-author: "Nelson Gould"
+author: "Nelson Gould, Max Russer, Caio Vianna"
 date: "11/26/2018"
 output: html_document
 ---
@@ -126,10 +126,10 @@ mf_sal_qq <- ggplot(doc_salary, aes(sample = salary))+
   geom_qq(aes(fill = sex))
 mf_sal_qq
 
-# Data appear to be non-normal, will use Mann-Whitney U test 
+# Data appear to be non-normal, n = 15, will use Mann-Whitney U test 
 
 
-# Summary Column Graph
+### Summary Column Graph
 
 male_female_sal_graph <- ggplot(mf_sal_sum, aes(x= sex, y = mean_salary/1000)) +
   geom_col(aes(fill = sex), position = "dodge", fill = c("tomato","skyblue","tomato","skyblue"), color = "black") +
@@ -143,14 +143,38 @@ male_female_sal_graph <- ggplot(mf_sal_sum, aes(x= sex, y = mean_salary/1000)) +
 
 male_female_sal_graph
 
-# Mann-Whitney U test for both Non-Postdoc and Postdoc
+### Mann-Whitney U test and Cliff's Delta for both Non-Postdoc and Postdoc ####
+
+# Postdoc
+
+male_sal_postdoc <- doc_salary %>% 
+  filter(postgrad_plan == "Postdoctoral study") %>% 
+  filter(sex == "Male")
+female_sal_postdoc <- doc_salary %>% 
+  filter(postgrad_plan == "Postdoctoral study") %>% 
+  filter(sex == "Female")
+mf_sal_postdoc_mannwhitu <- wilcox.test(male_sal_postdoc$salary,female_sal_postdoc$salary)
+
+mf_sal_postdoc_cliffd <- cliff.delta(male_sal_postdoc$salary,female_sal_postdoc$salary)
+
+mf_sal_postdoc_mannwhitu
+mf_sal_postdoc_cliffd # Negligable!
 
 # Non-Postdoc
 
-mf_sal_postdoc_mannwhitu <- doc_salary %>% 
-  filter(postgrad_plan == "Postdoctoral Study")
+male_sal_empl <- doc_salary %>% 
+  filter(postgrad_plan == "Employment") %>% 
+  filter(sex == "Male")
+female_sal_empl <- doc_salary %>% 
+  filter(postgrad_plan == "Employment") %>% 
+  filter(sex == "Female")
+mf_sal_empl_mannwhitu <- wilcox.test(male_sal_empl$salary,female_sal_empl$salary)
 
-wilcox.test()
+mf_sal_empl_cliffd <- cliff.delta(male_sal_empl$salary,female_sal_empl$salary)
+
+mf_sal_empl_mannwhitu
+mf_sal_empl_cliffd # Small Effect Size
+
 
 ```
 
