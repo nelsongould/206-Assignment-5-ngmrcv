@@ -36,14 +36,37 @@ phd_field <- read_csv("phd_by_field_simplified.csv")
 # 1. Male and female graduate enrollment (1967 - 2015).
 
 male_female_grad_graph <- ggplot(grad_enroll, aes(x = Year)) +
-  geom_point(aes(y = total_males/1000), color = "skyblue") +
-  geom_point(aes(y = total_females/1000), color = "tomato") +
+  geom_point(aes(y = total_males/1000), color = "skyblue", alpha = 0.75) +
+  geom_point(aes(y = total_females/1000), color = "tomato", alpha = 0.75) +
   theme_classic() +
-  labs(y = "Graduate Enrollment Count (1000 students)") 
-  #scale_x_continuous(expand = c(0,0)) +
-  #scale_y_continuous(expand = c(0,0))
+  labs(y = "Graduate Enrollment Count (1000 students)") +
+  geom_smooth(aes(y = total_males/1000), method = lm, se = TRUE, size = 0.5, color = "skyblue", fill = "skyblue",alpha = 0.25) +
+  geom_smooth(aes(y = total_females/1000), method = lm, se = TRUE, size = 0.5, color = "tomato", fill = "tomato",alpha = 0.25) +
+  scale_x_continuous(expand = c(0,0),limits = c(1966,2016)) +
+  scale_y_continuous(expand = c(0,0),limits = c(250,1800))
   
 male_female_grad_graph
+
+# Trend analysis
+# Male
+
+male_grad_enroll_model <- lm(total_males/1000 ~ Year, data = grad_enroll)
+summary(male_grad_enroll_model)
+
+cor.test(grad_enroll$Year, grad_enroll$total_males/1000)
+
+# Female
+female_grad_enroll_model <- lm(total_females/1000 ~ Year, data = grad_enroll)
+summary(female_grad_enroll_model)
+
+cor.test(grad_enroll$Year, grad_enroll$total_females/1000)
+
+# total_males = 9.069(Year) - 17112.153 -- R^2 = 0.8545 -- F(1,47) = 276, p < 2.2x10^-16 -- R = 0.9243
+
+# total_females = 30.13(Year) - 58955.50 -- R^2 = 0.9827 -- F(1,47) = 2669, p < 2.2x10^-16 -- R = 0.9913
+
+plot(male_grad_enroll_model)
+plot(female_grad_enroll_model)
 
 ```
 
