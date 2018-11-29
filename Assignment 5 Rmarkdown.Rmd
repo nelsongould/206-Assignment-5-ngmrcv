@@ -52,6 +52,10 @@ male_female_grad_graph
 
 # 2. Shifts in female PhD recipients by field (1985, 2000, and 2015).
 
+phd_field %>%
+  filter(field_of_study != "NA" | field_of_study != "Female") %>%
+  select(field_of_study, number_1985, number_2000, number_2015)
+
 
 
 
@@ -96,4 +100,46 @@ male_female_sal_graph <- ggplot(mf_sal_sum, aes(x=sex, y = mean_salary)) +
 
 male_female_sal_graph
 ```
+
+```{r}
+
+# 4. Multiple linear regression
+
+# Visualize salary by sex
+
+by_sex <- ggplot(faculty_salary, aes(x = Salary)) +
+  geom_density(aes(color = Sex, fill = Sex), alpha = 0.3) +
+  theme_classic() +
+  scale_x_continuous(expand = c(0,0), limits = c(0,250000)) +
+  scale_y_continuous(expand = c(0,0)) +
+  labs(x = "Salary", y = "Density")
+
+by_sex
+
+```
+
+```{r}
+# 4 (cont.)
+
+# Relationship b/w rank and salary
+
+by_rank <- ggplot(faculty_salary, aes(x = faculty_rank, y = Salary)) +
+  geom_point(aes(color = Sex, pch = Sex), alpha = 0.5) +
+  facet_wrap(~Sex)
+
+by_rank
+
+```
+
+```{r}
+# 4 (cont.)
+
+# saturated model
+
+salary_lm1 <- lm(Salary ~ faculty_rank + Years_Since_PhD + Years_Faculty_Service + Sex + discipline, data = faculty_salary)
+
+salary_lm1
+
+```
+
 
