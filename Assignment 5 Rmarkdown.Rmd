@@ -130,8 +130,8 @@ male_female_sal_graph
 
 # Visualize salary by sex
 
-by_sex <- ggplot(faculty_salary, aes(x = Salary)) +
-  geom_density(aes(color = Sex, fill = Sex), alpha = 0.3) +
+by_sex <- ggplot(faculty_salary, aes(x = salary)) +
+  geom_density(aes(color = sex, fill = sex), alpha = 0.3) +
   theme_classic() +
   scale_x_continuous(expand = c(0,0), limits = c(0,250000)) +
   scale_y_continuous(expand = c(0,0)) +
@@ -146,9 +146,9 @@ by_sex
 
 # Relationship b/w rank and salary
 
-by_rank <- ggplot(faculty_salary, aes(x = faculty_rank, y = Salary)) +
-  geom_point(aes(color = Sex, pch = Sex), alpha = 0.5) +
-  facet_wrap(~Sex)
+by_rank <- ggplot(faculty_salary, aes(x = faculty_rank, y = salary)) +
+  geom_point(aes(color = sex, pch = sex), alpha = 0.5) +
+  facet_wrap(~sex)
 
 by_rank
 
@@ -159,10 +159,11 @@ by_rank
 
 # saturated model
 
-salary_lm1 <- lm(Salary ~ faculty_rank + Years_Since_PhD + Years_Faculty_Service + Sex + discipline, data = faculty_salary)
+salary_lm1 <- lm(salary ~ faculty_rank + years_since_phd + years_faculty_service + sex + discipline, data = faculty_salary)
 
 salary_lm1
 
+summary(salary_lm1)
 ```
 
 ```{r}
@@ -170,11 +171,41 @@ salary_lm1
 
 # updated model
 
-salary_lm2 <- lm(Salary ~ faculty_rank + Sex + discipline, data = faculty_salary)
+salary_lm2 <- lm(salary ~ faculty_rank + sex + discipline, data = faculty_salary)
 
 salary_lm2
 
 summary(salary_lm2)
+
+```
+
+```{r}
+# 4. (cont.)
+
+# Model diagnostics
+
+plot(salary_lm2)
+```
+
+```{r}
+# 4. (cont.)
+
+# Compare AIC values for each model
+
+lm1_aic <- AIC(salary_lm1)
+
+lm2_aic <- AIC(salary_lm2)
+
+lm1_aic
+lm2_aic
+```
+```{r include = FALSE}
+
+# 4. (cont.)
+
+# Prepare regregression table using stargazer 
+
+stargazer(salary_lm1, salary_lm2, type = "html")
 
 ```
 
