@@ -280,5 +280,9 @@ lm2_aic
 
 stargazer(salary_lm1, salary_lm2, type = "html")
 
+# Explore multicollinearity? cor() and/or pairs()? Data needs to be numeric. Use dummy variables?
+
+
+
 ```
 
