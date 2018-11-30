@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r include = FALSE}
 # Install packages and read in csv files
 
 library(tidyverse)
@@ -75,12 +75,31 @@ plot(female_grad_enroll_model)
 
 # 2. Shifts in female PhD recipients by field (1985, 2000, and 2015).
 
-phd_field %>%
-  filter(field_of_study != "NA" | field_of_study != "Female") %>%
-  select(field_of_study, number_1985, number_2000, number_2015)
+phd_tble <- phd_field %>%
+  filter(field_of_study != "NA") %>%
+  filter(field_of_study != "Female") %>% 
+  select(field_of_study, number_1985, number_2000, number_2015) %>% 
+  select(-field_of_study)
 
+colnames(phd_tble) <- c("1985", "2000", "2015")
+rownames(phd_tble) <- c("Physical & Earth Sciences", "Engineering", "Education", "Humanities & Arts")
 
+phd_tble
 
+phd_prop <- prop.table(as.matrix(phd_tble), 1)
+
+phd_x2 <- chisq.test(phd_tble)
+
+phd_x2
+
+phd_prop_rnd <- phd_prop %>%
+  round(2)
+
+phd_prop_tble <- kable(phd_prop_rnd, col.names = c("1985", "2000", "2015")) %>% 
+  kable_styling(bootstrap_options = "striped", full_width = F) %>% 
+  add_header_above(c(" " = 1, "Proportion of Female PhD Students by Field" = 3))
+
+phd_prop_tble
 
 ```
 
