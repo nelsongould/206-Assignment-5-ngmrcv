@@ -85,8 +85,12 @@ colnames(phd_tble) <- c("1985", "2000", "2015")
 rownames(phd_tble) <- c("Physical & Earth Sciences", "Engineering", "Education", "Humanities & Arts")
 
 phd_tble
+mat_phd_tble <- as.matrix(phd_tble)
+noprop_phd_x2 <- chisq.test(mat_phd_tble)
+noprop_phd_x2
 
 phd_prop <- prop.table(as.matrix(phd_tble), 1)
+
 
 phd_x2 <- chisq.test(phd_tble)
 
@@ -212,6 +216,16 @@ by_sex <- ggplot(faculty_salary, aes(x = salary)) +
 
 by_sex
 
+sex_scatter <- ggplot(faculty_salary, aes(x=years_since_phd, y = salary))+
+  geom_point(aes(color = sex)) +
+  geom_smooth(aes(color = sex), method = lm, se = TRUE, size = 0.5)
+sex_scatter
+
+disp_scatter <- ggplot(faculty_salary, aes(x=years_since_phd, y = salary))+
+  geom_point(aes(color = discipline)) +
+  geom_smooth(aes(color = discipline), method = lm, se = TRUE, size = 0.5)
+disp_scatter
+
 ```
 
 ```{r}
@@ -237,6 +251,8 @@ salary_lm1 <- lm(salary ~ faculty_rank + years_since_phd + years_faculty_service
 salary_lm1
 
 summary(salary_lm1)
+
+
 ```
 
 ```{r}
@@ -258,6 +274,7 @@ summary(salary_lm2)
 # Model diagnostics
 
 plot(salary_lm2)
+
 ```
 
 ```{r}
