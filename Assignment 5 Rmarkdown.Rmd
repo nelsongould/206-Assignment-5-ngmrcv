@@ -89,7 +89,7 @@ mat_phd_tble <- as.matrix(phd_tble)
 noprop_phd_x2 <- chisq.test(mat_phd_tble)
 noprop_phd_x2
 
-phd_prop <- prop.table(as.matrix(phd_tble), 1)
+phd_prop <- prop.table(as.matrix(phd_tble), 2)
 
 
 phd_x2 <- chisq.test(phd_tble)
@@ -101,7 +101,7 @@ phd_prop_rnd <- phd_prop %>%
 
 phd_prop_tble <- kable(phd_prop_rnd, col.names = c("1985", "2000", "2015")) %>% 
   kable_styling(bootstrap_options = "striped", full_width = F) %>% 
-  add_header_above(c(" " = 1, "Proportion of Female PhD Students by Field" = 3))
+  add_header_above(c(" " = 1, "Proportion of Female PhD Recipients by Field" = 3))
 
 phd_prop_tble
 
@@ -289,7 +289,7 @@ lm2_aic <- AIC(salary_lm2)
 lm1_aic
 lm2_aic
 ```
-```{r include = FALSE}
+```{r}
 
 # 4. (cont.)
 
