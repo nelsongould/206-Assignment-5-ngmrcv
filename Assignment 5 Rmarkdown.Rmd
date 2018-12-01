@@ -61,7 +61,7 @@ summary(female_grad_enroll_model)
 
 cor.test(grad_enroll$Year, grad_enroll$total_females/1000)
 
-# total_males = 9.069(Year) - 17112.153 -- R^2 = 0.8545 -- F(1,47) = 276, p < 2.2x10^-16 -- R = 0.9243
+# total_males = 9.069(Year) - 17112.153, p < 2.2x10^-16 -- R^2 = 0.8545 -- F(1,47) = 276, -- R = 0.9243
 
 # total_females = 30.13(Year) - 58955.50 -- R^2 = 0.9827 -- F(1,47) = 2669, p < 2.2x10^-16 -- R = 0.9913
 
@@ -69,7 +69,7 @@ plot(male_grad_enroll_model)
 plot(female_grad_enroll_model)
 
 ```
-
+Figure 1. 
 
 ```{r}
 
@@ -289,7 +289,7 @@ lm2_aic <- AIC(salary_lm2)
 lm1_aic
 lm2_aic
 ```
-```{r include = FALSE}
+```{r stargazer, results = "asis"}
 
 # 4. (cont.)
 
