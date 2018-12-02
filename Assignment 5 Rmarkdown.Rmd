@@ -158,7 +158,7 @@ male_female_sal_graph <- ggplot(mf_sal_sum, aes(x= sex, y = mean_salary/1000)) +
   geom_col(aes(fill = sex), position = "dodge", fill = c("tomato","skyblue","tomato","skyblue"), color = "black") +
   facet_wrap(~datatype) +
   theme_classic() +
-  labs(x = "Sex", y = "Mean Median Salary ($1000)") +
+  labs(x = "Sex", y = "Average Median Salary ($1000)") +
   scale_x_discrete(expand = c(0,0)) +
   scale_y_continuous(expand = c(0,0), limits = c(0,120)) +
   theme(legend.position = "none") +
@@ -197,6 +197,33 @@ mf_sal_empl_cliffd <- cliff.delta(male_sal_empl$salary,female_sal_empl$salary)
 
 mf_sal_empl_mannwhitu
 mf_sal_empl_cliffd # Small Effect Size
+
+
+
+####### What if this is a paired test
+
+mf_sal_postdoc_paired <- wilcox.test(male_sal_postdoc$salary,female_sal_postdoc$salary, paired = TRUE)
+mf_sal_postdoc_paired
+  
+mf_sal_empl_paired <- wilcox.test(male_sal_empl$salary,female_sal_empl$salary, paired = TRUE)
+mf_sal_empl_paired
+
+
+#Paired Graph
+
+mf_paired_sal_graph <- ggplot(doc_salary, aes(x= field, y = salary/1000)) +
+  geom_col(aes(fill = sex), position = "dodge") +
+  facet_wrap(~postgrad_plan) +
+  theme_classic() +
+  labs(x = "Field", y = "Median Salary ($1000)") +
+  scale_x_discrete(expand = c(0,0)) +
+  scale_y_continuous(expand = c(0,0)) +
+  coord_flip() +
+  theme(panel.spacing = unit(2, "lines")) +
+  scale_fill_manual(values=c("tomato","skyblue")) +
+  guides(fill=guide_legend(title="Sex"))
+  
+mf_paired_sal_graph
 
 
 ```
