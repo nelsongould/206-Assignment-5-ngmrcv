@@ -211,14 +211,18 @@ mf_sal_empl_paired
 
 #Paired Graph
 
-mf_paired_sal_graph <- ggplot(doc_salary, aes(x= field, y = salary/1000)) +
+doc_salary <- doc_salary %>% 
+  mutate(postgrad_plan = ifelse(postgrad_plan == "Employment", "Non-Postdoctoral", "Postdoctoral"))
+
+mf_paired_sal_graph <- ggplot(doc_salary, aes(x= factor(field,levels = rev(levels(factor(field)))), y = salary/1000)) +
   geom_col(aes(fill = sex), position = "dodge") +
   facet_wrap(~postgrad_plan) +
   theme_classic() +
   labs(x = "Field", y = "Median Salary ($1000)") +
-  scale_x_discrete(expand = c(0,0)) +
+  scale_x_discrete(expand = c(0,0),limits = rev(levels(doc_salary$field))) +
   scale_y_continuous(expand = c(0,0)) +
   coord_flip() +
+  labs(x = "") +
   theme(panel.spacing = unit(2, "lines")) +
   scale_fill_manual(values=c("tomato","skyblue")) +
   guides(fill=guide_legend(title="Sex"))
