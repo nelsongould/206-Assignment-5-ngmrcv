@@ -75,6 +75,9 @@ plot(female_grad_enroll_model)
 
 # 2. Shifts in female PhD recipients by field (1985, 2000, and 2015).
 
+# Make proportion graph? 
+# Allison basically said to make proportion table in word. 
+
 phd_tble <- phd_field %>%
   filter(field_of_study != "NA") %>%
   filter(field_of_study != "Female") %>% 
@@ -246,6 +249,8 @@ by_rank
 
 # saturated model
 
+# Allison said that there is no example of multiple linear regression. Should discuss the multiple variables and how they affect reference variable. Could use multiple models. 
+
 salary_lm1 <- lm(salary ~ faculty_rank + years_since_phd + years_faculty_service + sex + discipline, data = faculty_salary)
 
 salary_lm1
@@ -274,6 +279,7 @@ summary(salary_lm2)
 # Model diagnostics
 
 plot(salary_lm2)
+plot(salary_lm1)
 
 ```
 
@@ -289,7 +295,7 @@ lm2_aic <- AIC(salary_lm2)
 lm1_aic
 lm2_aic
 ```
-```{r}
+```{r stargazer, results = 'asis'}
 
 # 4. (cont.)
 
