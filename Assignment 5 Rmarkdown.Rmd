@@ -61,7 +61,7 @@ summary(female_grad_enroll_model)
 
 cor.test(grad_enroll$Year, grad_enroll$total_females/1000)
 
-# total_males = 9.069(Year) - 17112.153 -- R^2 = 0.8545 -- F(1,47) = 276, p < 2.2x10^-16 -- R = 0.9243
+# total_males = 9.069(Year) - 17112.153, p < 2.2x10^-16 -- R^2 = 0.8545 -- F(1,47) = 276, -- R = 0.9243
 
 # total_females = 30.13(Year) - 58955.50 -- R^2 = 0.9827 -- F(1,47) = 2669, p < 2.2x10^-16 -- R = 0.9913
 
@@ -69,7 +69,7 @@ plot(male_grad_enroll_model)
 plot(female_grad_enroll_model)
 
 ```
-
+Figure 1. 
 
 ```{r}
 
@@ -161,7 +161,7 @@ male_female_sal_graph <- ggplot(mf_sal_sum, aes(x= sex, y = mean_salary/1000)) +
   geom_col(aes(fill = sex), position = "dodge", fill = c("tomato","skyblue","tomato","skyblue"), color = "black") +
   facet_wrap(~datatype) +
   theme_classic() +
-  labs(x = "Sex", y = "Mean Median Salary ($1000)") +
+  labs(x = "Sex", y = "Average Median Salary ($1000)") +
   scale_x_discrete(expand = c(0,0)) +
   scale_y_continuous(expand = c(0,0), limits = c(0,120)) +
   theme(legend.position = "none") +
@@ -200,6 +200,37 @@ mf_sal_empl_cliffd <- cliff.delta(male_sal_empl$salary,female_sal_empl$salary)
 
 mf_sal_empl_mannwhitu
 mf_sal_empl_cliffd # Small Effect Size
+
+
+
+####### What if this is a paired test
+
+mf_sal_postdoc_paired <- wilcox.test(male_sal_postdoc$salary,female_sal_postdoc$salary, paired = TRUE)
+mf_sal_postdoc_paired
+  
+mf_sal_empl_paired <- wilcox.test(male_sal_empl$salary,female_sal_empl$salary, paired = TRUE)
+mf_sal_empl_paired
+
+
+#Paired Graph
+
+doc_salary <- doc_salary %>% 
+  mutate(postgrad_plan = ifelse(postgrad_plan == "Employment", "Non-Postdoctoral", "Postdoctoral"))
+
+mf_paired_sal_graph <- ggplot(doc_salary, aes(x= factor(field,levels = rev(levels(factor(field)))), y = salary/1000)) +
+  geom_col(aes(fill = sex), position = "dodge") +
+  facet_wrap(~postgrad_plan) +
+  theme_classic() +
+  labs(x = "Field", y = "Median Salary ($1000)") +
+  scale_x_discrete(expand = c(0,0),limits = rev(levels(doc_salary$field))) +
+  scale_y_continuous(expand = c(0,0)) +
+  coord_flip() +
+  labs(x = "") +
+  theme(panel.spacing = unit(2, "lines")) +
+  scale_fill_manual(values=c("tomato","skyblue")) +
+  guides(fill=guide_legend(title="Sex"))
+  
+mf_paired_sal_graph
 
 
 ```
@@ -295,7 +326,11 @@ lm2_aic <- AIC(salary_lm2)
 lm1_aic
 lm2_aic
 ```
+<<<<<<< HEAD
 ```{r stargazer, results = 'asis'}
+=======
+```{r stargazer, results = "asis"}
+>>>>>>> 6e2dcb21b519f815ed9fd7eab4af28735e63d6b8
 
 # 4. (cont.)
 

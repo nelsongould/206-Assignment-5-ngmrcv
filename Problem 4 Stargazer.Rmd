@@ -1,0 +1,46 @@
+---
+title: 'Stargazer #4'
+author: "Nelson Gould"
+date: "12/1/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include = FALSE}
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(plotly)
+library(extrafont)
+library(effsize)
+library(vcdExtra)
+library(car)
+library(ggsignif)
+library(stargazer)
+
+faculty_salary <- read_csv("faculty_salary_data.csv")
+
+```
+
+```{r, include = FALSE}
+
+salary_lm1 <- lm(salary ~ faculty_rank + years_since_phd + years_faculty_service + sex + discipline, data = faculty_salary)
+salary_lm1
+
+salary_lm2 <- lm(salary ~ faculty_rank + sex + discipline, data = faculty_salary)
+salary_lm2
+
+
+
+```
+
+
+```{r stargazer, results = "asis"}
+
+stargazer(salary_lm1, salary_lm2, type = "html")
+```
+
